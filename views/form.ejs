@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title><%= title %></title>
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    <body>
+        <header>
+            <h1><%= title %></h1>
+        </header>
+        <form action="/new" method="POST">
+            <input type="text" id="author" name="author" placeholder="Your name">
+            <input type="text" id="message" name="message" placeholder="Your message">
+            <button id="submit">Submit</button>
+        </form>
+    </body>
