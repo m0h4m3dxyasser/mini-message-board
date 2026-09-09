@@ -12,14 +12,18 @@
     </header>
     <div class="message-board">
         <ul>
-            <% messages.forEach((message) => { %>
-                <li>
-                    <div class="username"><%= message.user %></div>
-                    <p><%= message.text %></p>
-                    <small><%= message.added.toLocaleString() %></small>
-                    <button id="details-btn">Open</button>
-                </li>
-            <% }); %>
+            <% if (messages && messages.length !== 0) { %>
+                <% messages.forEach((message) => { %>
+                    <li>
+                        <div class="username"><%= message.authorname %></div>
+                        <p><%= message.message %></p>
+                        <small><%= new Date(message.created_at).toLocaleString() %></small>
+                        <button id="details-btn">Open</button>
+                    </li>
+                <% }); %>
+            <% } else { %>
+                <%= 'no messages sent yet' %>
+            <% } %>
         </ul>
     </div>
 </body>

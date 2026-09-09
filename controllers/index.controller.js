@@ -1,20 +1,45 @@
-const { getMessages, addMessage } = require('../models/message.model');
+const { getMessages, addMessage } = require('../models/message.query');
+const { body, validationResult, matchedData } = require('express-validator');
 
-function getIndex(req, res) {
-    res.render('index', { title: "Mini Message Board", messages: getMessages() });
+const validators = [
+    body('author')
+        .trim()
+        .notEmpty()
+        .withMessage("name cannot be empty"),
+    body('message')
+        .trim()
+        .isLength({ min: 1, max: 100 })
+        .withMessage("message must be between 1 to 100 characters")
+];
+
+async function getIndex(req, res) {
+    res.render('index', { title: "Mini Message Board", messages: await getMessages() });
 }
 
 function getNewMessageForm(req, res) {
-    res.render('form', { title: "New Message" });
+    res.render('form', {
+        title: "New Message",
+        author: '',
+        message: '',
+        errors: []
+    });
 }
 
-function postNewMessage(req, res) {
-    const newMsg = {
-        text: req.body.message,
-        user: req.body.author,
-        added: new Date()
-    };
-    addMessage(newMsg);
+async function postNewMessage(req, res) {
+    const results = validationResult(req);
+
+    if (!results.isEmpty()) {
+        res.render('form', {
+            title: "New Message",
+            author: req.body.author,
+            message: req.body.message,
+            errors: results.array()
+        });
+        return;
+    }
+
+    const data = matchedData(req);
+    await addMessage(data.author, data.message, new Date());
     res.redirect('/');
 }
 
@@ -34,6 +59,7 @@ function handleError(err, req, res, next) {
 module.exports = {
     getIndex,
     getNewMessageForm,
+    validators,
     postNewMessage,
     notFound,
     handleError

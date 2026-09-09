@@ -1,12 +1,12 @@
 const { Router } = require('express');
 const indexRouter = Router();
-const { getIndex, getNewMessageForm, postNewMessage, handleError, notFound } = require('../controllers/index.controller');
+const { getIndex, getNewMessageForm, postNewMessage, handleError, notFound, validators } = require('../controllers/index.controller');
 
-indexRouter.get('/{index}', getIndex);
+indexRouter.get('/', getIndex);
 
 indexRouter.get('/new', getNewMessageForm);
 
-indexRouter.post('/new', postNewMessage);
+indexRouter.post('/new', validators, postNewMessage);
 
 indexRouter.use(notFound);
 

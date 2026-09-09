@@ -11,8 +11,15 @@
             <h1><%= title %></h1>
         </header>
         <form action="/new" method="POST">
-            <input type="text" id="author" name="author" placeholder="Your name">
-            <input type="text" id="message" name="message" placeholder="Your message">
+            <input type="text" id="author" name="author" placeholder="Your name" value="<%= author || '' %>">
+            <input type="text" id="message" name="message" placeholder="Your message" value="<%= message || ''%>">
+            <% if (errors && errors.length > 0) { %>
+                <div class="form-errors">
+                    <% errors.forEach(error => { %>
+                        <p><%= error.msg %></p>
+                    <% }); %>
+                </div>
+            <% } %>
             <button id="submit">Submit</button>
         </form>
     </body>
